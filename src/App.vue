@@ -24,7 +24,7 @@ export default {
 <style scoped>
 
 .vista-enter-active, .vista-leave-active {
-    transition: opacity .1s;
+    transition: opacity .3s;
 }
 .vista-enter, .vista-leave-to{
     opacity: 0;

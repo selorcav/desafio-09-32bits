@@ -5,19 +5,26 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    title: '32bits',
-    subtitle: 'Juegos de PC y consolas',
-    games:[
-      {id: '001', name: 'Sekiro' , stock: 100 , price: 30000 , color: 'red' , outstanding: true},
-      {id: '002', name: 'Fifa 21' , stock: 100 , price: 35000 , color: 'blue' , outstanding: false},
-      {id: '003', name: 'Gears of war 4' , stock: 100 , price: 15000 , color: 'green' , outstanding: true},
-      {id: '004', name: 'Mario Tennis Aces', stock: 100 , price: 35000 , color: 'yellow' , outstanding: false},
-      {id: '005', name: 'Bloodborne', stock: 100 , price: 10000 , color: 'blue', outstanding: false },
-      {id: '006', name: 'Forza Horizon 4' , stock: 100 , price: 20000 , color: 'red', outstanding: true},
-    ]
-
+    title: "32Bits",
+    subtitle: "Juegos de PC y Consolas",
+    games: [{id:"0001", name:"Sekiro", stock:100, price:30000, color:"red", outstanding:false},
+    {id:"0002", name:"Fifa 21", stock:100, price:25000, color:"blue", outstanding:true},
+    {id:"0003", name:"Gears of War 4", stock:100, price:15000, color:"green", outstanding:true},
+    {id:"0004", name:"Mario Tennis Aces", stock:100, price:35000, color:"yellow", outstanding:false},
+    {id:"0005", name:"Bloodhorne", stock:100, price:10000, color:"blue", outstanding:false},
+    {id:"0006", name:"Forza Horizon 4", stock:100, price:20000, color:"red", outstanding:true}]
   },
-  getters: {},
+  getters: {
+    availableGames(state){
+      return state.games.filter(game => game.stock > 0);
+    },
+    searchById:(_state, getters) => (id) => {
+      return getters.availableGames.filter(game => game.id == id)
+    },
+    totalStock(state){
+      return state.games.reduce((acc, game) => acc + game.stock, 0)
+    }
+  },
   mutations: {},
   actions: {}
 });
