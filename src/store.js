@@ -7,7 +7,8 @@ const store = new Vuex.Store({
   state: {
     title: "32Bits",
     subtitle: "Juegos de PC y Consolas",
-    games: [{id:"0001", name:"Sekiro", stock:100, price:30000, color:"red", outstanding:false},
+    games: 
+    [{id:"0001", name:"Sekiro", stock:100, price:30000, color:"red", outstanding:false},
     {id:"0002", name:"Fifa 21", stock:100, price:25000, color:"blue", outstanding:true},
     {id:"0003", name:"Gears of War 4", stock:100, price:15000, color:"green", outstanding:true},
     {id:"0004", name:"Mario Tennis Aces", stock:100, price:35000, color:"yellow", outstanding:false},
@@ -19,14 +20,36 @@ const store = new Vuex.Store({
       return state.games.filter(game => game.stock > 0);
     },
     searchById:(_state, getters) => (id) => {
-      return getters.availableGames.filter(game => game.id == id)
+    return getters.availableGames.filter(game => game.id == id)
     },
     totalStock(state){
-      return state.games.reduce((acc, game) => acc + game.stock, 0)
+    return state.games.reduce((acc, game) => acc + game.stock, 0)
+    },
+    totalGamesSold(state){
+      let games = state.sales.map((game) => game.name)
+      return games.reduce((a, c) => (a[c] = (a[c] || 0 ) + 1, a), Object.create(null));
     }
   },
-  mutations: {},
-  actions: {}
+  mutations: {
+    ADD_SALES(state, product){
+      state.sales.push(product);
+    },
+    REMOVE_STOCK(state, game){
+      let prod = state.games.find(p => p.id == game.id)
+      prod.stock -=1;
+    },
+  },
+  actions: {
+    processSale({commit},game){
+      setTimeout(() => {
+        commit('REMOVE_STOCK',game)
+        setTimeout(() => {
+          commit('ADD_SALES',game)
+          alert('venta procesada');
+        },2000)
+      },3000)
+    },
+  },
 });
 
 export default store;
